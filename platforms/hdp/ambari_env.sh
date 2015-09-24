@@ -46,10 +46,20 @@ COMMAND_GROUPS+=(
   "install-ambari-components:
      platforms/hdp/install_ambari_components.sh
   "
+  
+  "install-spatialhadoop2:
+    platforms/hdp/install_spatialhadoop2.sh
+  "
+  
+  "download_pig_libs:
+    platforms/hdp/download_pig_libs.sh
+  "
 )
 
 COMMAND_STEPS+=(
   'install-ambari-components,*'
   'install-gcs-connector-on-ambari,install-gcs-connector-on-ambari'
   'update-ambari-config,*'
+  'install-spatialhadoop2,install-spatialhadoop2'
+  'download_pig_libs,*'
 )

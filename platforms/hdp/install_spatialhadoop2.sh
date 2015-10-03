@@ -1,4 +1,4 @@
-ls#!/bin/bash
+#!/bin/bash
 
 # This script installs the spatialhadoop package (in this case spatialhadoop-2.4 onto a Hortonworks HDP cluster)
 

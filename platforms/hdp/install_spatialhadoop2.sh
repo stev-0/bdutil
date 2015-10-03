@@ -1,8 +1,8 @@
-#!/bin/bash
+ls#!/bin/bash
 
 # This script installs the spatialhadoop package (in this case spatialhadoop-2.4 onto a Hortonworks HDP cluster)
 
-HDP_VERSION="2.2.6.0-2800"
+HDP_VERSION="2.2.8.0-3150"
 SPATIALHADOOP_VERSION="spatialhadoop-2.4-rc1-2"
 
 mkdir spatialhadoop2

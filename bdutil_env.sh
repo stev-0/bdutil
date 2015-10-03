@@ -157,6 +157,13 @@ DEFAULT_FS='gs'
 # list-after-write consistency.
 ENABLE_NFS_GCS_FILE_CACHE=true
 
+# If set, uses the provided hostname for the NFS-based GCS consistency cache
+# rather than assuming the master on the cluster is always the cache server.
+# This allows a standalone cache (optionally createed with the bdutil-provided
+# standalone_nfs_cache_env.sh) to be used cross-cluster. If unset, defaults
+# to using the master of the cluster as the cache server.
+GCS_CACHE_MASTER_HOSTNAME=''
+
 # User to create which owns the directories used by the NFS GCS file cache
 # and potentially other gcs-connector-related tasks.
 GCS_ADMIN='gcsadmin'
@@ -192,10 +199,10 @@ CORES_PER_REDUCE_TASK=1.0
 JAVAOPTS='-Xms1024m -Xmx2048m'
 
 # Complete URL for downloading the GCS Connector JAR file.
-GCS_CONNECTOR_JAR='https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-1.4.1-hadoop1.jar'
+GCS_CONNECTOR_JAR='https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-1.4.2-hadoop1.jar'
 
 # Complete URL for downloading the BigQuery Connector JAR file.
-BIGQUERY_CONNECTOR_JAR='https://storage.googleapis.com/hadoop-lib/bigquery/bigquery-connector-0.7.1-hadoop1.jar'
+BIGQUERY_CONNECTOR_JAR='https://storage.googleapis.com/hadoop-lib/bigquery/bigquery-connector-0.7.2-hadoop1.jar'
 
 # Complete URL for downloading the configuration script.
 BDCONFIG='https://storage.googleapis.com/hadoop-tools/bdconfig/bdconfig-0.28.1.tar.gz'
@@ -359,6 +366,12 @@ function evaluate_late_variable_bindings() {
   # GCS directory for deployment-related temporary files.
   local staging_dir_base="gs://${CONFIGBUCKET}/bdutil-staging"
   BDUTIL_GCS_STAGING_DIR="${staging_dir_base}/${MASTER_HOSTNAME}"
+
+  # Default NFS cache host is the master node, but it can be overriden to point
+  # at an NFS server off-cluster.
+  if [[ -z "${GCS_CACHE_MASTER_HOSTNAME}" ]]; then
+    GCS_CACHE_MASTER_HOSTNAME="${MASTER_HOSTNAME}"
+  fi
 }
 
 # Helper to allow env_file dependency. Relative paths are resolved relative to
